@@ -12,15 +12,6 @@ class Languages extends Component {
             return l.languageId == lang.languageId
         })
         Actions.reset('home', {startPage: startPage.pageId});
-        /*Alert.alert(
-            'Change language to:',
-            '' + lang.language,
-            [
-                { text: 'Change language', onPress: () => Actions.reset('home', {startPage: startPage}) },
-                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-            ],
-            { cancelable: false }
-        )*/
     }
 
     openLanguage = () => {
