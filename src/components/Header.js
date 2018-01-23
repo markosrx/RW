@@ -4,7 +4,7 @@ import { Actions } from 'react-native-router-flux';
 import HTML from 'react-native-render-html';
 import RNRestart from 'react-native-restart';
 
-export default class Header extends React.Component {
+export default class Header extends Component {
 
   openLanguage = () => {
     this.props.onPressLang();
@@ -45,14 +45,14 @@ export default class Header extends React.Component {
         Alert.alert('App is already up to date!', '', [{ text: 'OK', onPress: () => {  } }])
         else {
           Alert.alert('There seems to be update.!', 'Do you wish to sync?', [{text: 'OK', onPress: () => { RNRestart.Restart(); }}, {text: 'Cancel', onPress: () => {  }}]);
-          //Actions.reset('app');
         }
       })
   }
 
+  
 
   render() {
-
+    
     return (
 
       <View style={styles.navbarH}>

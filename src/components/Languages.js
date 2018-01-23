@@ -13,7 +13,9 @@ class Languages extends Component {
             case 'German': startPage = '640'; break;
             default: startPage = '333'; break;
         }
-        Alert.alert(
+
+        Actions.reset('home', {startPage: startPage});
+        /*Alert.alert(
             'Change language to:',
             '' + lang.language,
             [
@@ -21,7 +23,7 @@ class Languages extends Component {
                 { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
             ],
             { cancelable: false }
-        )
+        )*/
     }
 
     openLanguage = () => {

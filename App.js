@@ -17,9 +17,16 @@ import Routes from './src/components/Routes';
 import DeviceInfo from 'react-native-device-info';
 import Orientation from 'react-native-orientation';
 import base64 from 'base-64';
+import BackgroundTimer from 'react-native-background-timer';
 
 
 export default class App extends Component {
+
+  constructor() {
+    super();
+
+    console.ignoredYellowBox = ['Setting a timer'];
+  }
 
   state = {
     downloadedL: 0,
@@ -388,6 +395,23 @@ export default class App extends Component {
   componentWillMount() {
     Orientation.lockToLandscape();
     this.isLoading();
+  }
+
+  syncApp() {
+    const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
+    fetch(projectJsonURL)
+      .then(res => res.json())
+      .then(res => {
+        if(res.project.lastChanges == global.projectJson.project.lastChanges)
+        Alert.alert('App is already up to date!', '', [{ text: 'OK', onPress: () => {  } }])
+        else {
+          Alert.alert('There seems to be update.!', 'Do you wish to sync?', [{text: 'OK', onPress: () => { RNRestart.Restart(); }}, {text: 'Cancel', onPress: () => {  }}]);
+        }
+      })
+  }
+
+  componentDidMount() {
+    BackgroundTimer.runBackgroundTimer(this.syncApp, 1000*60*60*24);
   }
 
   calcProgress() {
