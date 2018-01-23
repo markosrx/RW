@@ -8,13 +8,10 @@ class Languages extends Component {
 
     onclickLanguageText = (lang) => {
         let startPage;
-        switch(lang.language) {
-            case 'English': startPage = '333'; break;
-            case 'German': startPage = '640'; break;
-            default: startPage = '333'; break;
-        }
-
-        Actions.reset('home', {startPage: startPage});
+        startPage = global.globalJson.startPages.find(l => {
+            return l.languageId == lang.languageId
+        })
+        Actions.reset('home', {startPage: startPage.pageId});
         /*Alert.alert(
             'Change language to:',
             '' + lang.language,

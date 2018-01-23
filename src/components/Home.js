@@ -10,7 +10,7 @@ export default class Home extends Component {
   };
 
   componentWillMount() {
-    let a = this.props.startPage ? this.findStartPage(this.props.startPage) : this.findStartPage(global.globalJson.startPage);
+    let a = this.props.startPage ? this.findStartPage(this.props.startPage) : this.findStartPage(global.globalJson.startPages[0].pageId);
     global.language = Number(a[0].languageId)-1;
     let b = this.findMenu(a[0].menuId);
     this.setState({ menu: b, filtered: a });

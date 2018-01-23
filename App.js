@@ -415,6 +415,7 @@ export default class App extends Component {
           Alert.alert('There seems to be update.!', 'Do you wish to sync?', [{text: 'OK', onPress: () => { RNRestart.Restart(); }}, {text: 'Cancel', onPress: () => {  }}]);
         }
       })
+      .then(() => console.log('OKINUO TAJMER'));
   }
 
   componentDidMount() {

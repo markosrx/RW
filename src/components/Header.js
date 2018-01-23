@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, StatusBar, TouchableWithoutFeedback, Alert } f
 import { Actions } from 'react-native-router-flux';
 import HTML from 'react-native-render-html';
 import RNRestart from 'react-native-restart';
+import RNFB from 'react-native-fetch-blob';
 
 export default class Header extends Component {
 
@@ -38,21 +39,26 @@ export default class Header extends Component {
 
   syncApp() {
     const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
-    fetch(projectJsonURL)
-      .then(res => res.json())
-      .then(res => {
-        if(res.project.lastChanges == global.projectJson.project.lastChanges)
-        Alert.alert('App is already up to date!', '', [{ text: 'OK', onPress: () => {  } }])
-        else {
-          Alert.alert('There seems to be update.!', 'Do you wish to sync?', [{text: 'OK', onPress: () => { RNRestart.Restart(); }}, {text: 'Cancel', onPress: () => {  }}]);
-        }
+    RNFB.fs.readFile(RNFB.fs.dirs.DocumentDir + '/checkedFiles.json', 'utf8')
+      .then((res) => JSON.parse(res))
+      .then(fajlic => {
+        fetch(projectJsonURL)
+          .then(res => res.json())
+          .then(res => {
+            let neSkinutiFajlovi = fajlic.failedDownloads.length > 0 ? 'But there seems to be ' + fajlic.failedDownloads.length + ' missing files.' : '';
+            if (res.project.lastChanges == global.projectJson.project.lastChanges)
+              Alert.alert('App is already up to date!', neSkinutiFajlovi, [{ text: 'Restart', onPress: () => { RNRestart.Restart(); } }, {text: 'Cancel', onPress: () => {  }}])
+            else {
+              Alert.alert('There seems to be update.!', 'Do you wish to sync?', [{ text: 'OK', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
+            }
+          })
       })
   }
 
-  
+
 
   render() {
-    
+
     return (
 
       <View style={styles.navbarH}>
