@@ -121,20 +121,20 @@ export default class App extends Component {
       return new Promise((resolve, reject) => {
         RNFB.fs.exists(pathToCheckedFiles)
           .then(res => {
-             if(!res) {
+            if (!res) {
               return resolve([]);
-             } else {
-               RNFB.fs.readFile(pathToCheckedFiles, 'utf8')
-               .then(data => {
-                  if(JSON.parse(data).failedDownloads.length > 0) {
+            } else {
+              RNFB.fs.readFile(pathToCheckedFiles, 'utf8')
+                .then(data => {
+                  if (JSON.parse(data).failedDownloads.length > 0) {
                     checkedFiles = JSON.parse(data);
                     console.log('Files missing on server: ');
                     JSON.parse(data).failedDownloads.forEach(f => console.log(f));
                     return resolve(JSON.parse(data).failedDownloads);
-                  } else if(JSON.parse(data).allDownloaded) {
+                  } else if (JSON.parse(data).allDownloaded) {
                     return reject('Postoji checkedFiles.')
                   }
-               })
+                })
             }
           })
       })
@@ -176,7 +176,7 @@ export default class App extends Component {
         RNFB.fs.readFile(pathToContentJson, 'utf8')
           .then(res => {
             global.globalJson = JSON.parse(res);
-            
+
             if (fetchedProject.project.lastChanges == lastChangesOld) {
               //if(hash(fetchedContent) == hash(global.globalJson)) {
               //global.globalJson
@@ -214,15 +214,15 @@ export default class App extends Component {
         let t0 = Date.now();
         RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId + '?deviceId=' + deviceId)
           .then(r => {
-            if(r.info().status == 200) {
-            console.log('One file downloaded at ', r.path() + ', with status code: ' + r.info().status);
-            let t1 = Date.now();
-            this.setState(prevState => ({ downloaded: prevState.downloaded + 1, mbDone: prevState.mbDone + Math.round(Number(file.size) / 1024 / 1024) }));
-            let time = t1 - t0;
-            let sizeOne = Number(file.size) / 1024.0;
-            let dlSpeed = sizeOne / time;
-            global.averageSpeed = 0.001 * dlSpeed + (1 - 0.001) * global.averageSpeed;
-            return resolve();
+            if (r.info().status == 200) {
+              console.log('One file downloaded at ', r.path() + ', with status code: ' + r.info().status);
+              let t1 = Date.now();
+              this.setState(prevState => ({ downloaded: prevState.downloaded + 1, mbDone: prevState.mbDone + Math.round(Number(file.size) / 1024 / 1024) }));
+              let time = t1 - t0;
+              let sizeOne = Number(file.size) / 1024.0;
+              let dlSpeed = sizeOne / time;
+              global.averageSpeed = 0.001 * dlSpeed + (1 - 0.001) * global.averageSpeed;
+              return resolve();
             } else {
               console.log('Fajl ne postoji: ' + file.fileId);
               checkedFiles.failedDownloads.push(file);
@@ -266,7 +266,7 @@ export default class App extends Component {
             const timeBeforeDownload = Date.now();
             // const nekiTest = 'http://ipv4.download.thinkbroadband.com/5MB.zip'
             RNFB.config({ path: pathToSpeedBenchmarkFile }).fetch('GET', speedBenchmarkFile)
-            // RNFB.config({ path: pathToSpeedBenchmarkFile }).fetch('GET', nekiTest)
+              // RNFB.config({ path: pathToSpeedBenchmarkFile }).fetch('GET', nekiTest)
               .then((benchmarkFile) => {
                 const timeAfterDownload = Date.now();
                 const benchmarkTime = timeAfterDownload - timeBeforeDownload; // time to dl file
@@ -294,30 +294,30 @@ export default class App extends Component {
                   })
               })
               .catch(error => {
-                    let cellularType = res.effectiveType;
-                    let warningString = res.type == 'cellular' ? 'Warning, you are on cellular ' + cellularType + ' network, this download could be charged.' : '';
-                    let downloadSpeed = 0;
-                    if (res.type == 'cellular')
-                      switch (res.effectiveType) {
-                        case '2g':
-                          downloadSpeed = 0.04 / 8.0;
-                          break;
-                        case '3g':
-                          downloadSpeed = 6.04 / 8.0;
-                          break;
-                        case '4g':
-                          downloadSpeed = 18.4 / 8.0;
-                          break;
-                      }
-                    if (res.type == 'wifi')
-                      downloadSpeed = 23.5 / 8.0;
-                    global.averageSpeed = downloadSpeed;
-                    let est = downloadSpeed != 0 ? (mb / downloadSpeed / 60).toFixed(0) + ' minutes ' + ((mb / downloadSpeed).toFixed(0) % 60) + ' seconds' : 'inf.';
-                    Alert.alert(
-                      'About to download ' + mb + ' MB',
-                      '' + warningString + '\n' + 'Estimated time: ' + est + '.\nDo you wish to download?',
-                      [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
-                    )
+                let cellularType = res.effectiveType;
+                let warningString = res.type == 'cellular' ? 'Warning, you are on cellular ' + cellularType + ' network, this download could be charged.' : '';
+                let downloadSpeed = 0;
+                if (res.type == 'cellular')
+                  switch (res.effectiveType) {
+                    case '2g':
+                      downloadSpeed = 0.04 / 8.0;
+                      break;
+                    case '3g':
+                      downloadSpeed = 6.04 / 8.0;
+                      break;
+                    case '4g':
+                      downloadSpeed = 18.4 / 8.0;
+                      break;
+                  }
+                if (res.type == 'wifi')
+                  downloadSpeed = 23.5 / 8.0;
+                global.averageSpeed = downloadSpeed;
+                let est = downloadSpeed != 0 ? (mb / downloadSpeed / 60).toFixed(0) + ' minutes ' + ((mb / downloadSpeed).toFixed(0) % 60) + ' seconds' : 'inf.';
+                Alert.alert(
+                  'About to download ' + mb + ' MB',
+                  '' + warningString + '\n' + 'Estimated time: ' + est + '.\nDo you wish to download?',
+                  [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
+                )
               });
           })
       })
@@ -347,7 +347,7 @@ export default class App extends Component {
     prepareFilesArrayIntoChunks = (filesArr, sizeOfChunk) => {
       console.log('Chunking in progress');
       let chunkedArray = [];
-      for(let i = 0; i < filesArr.length; i += sizeOfChunk) {
+      for (let i = 0; i < filesArr.length; i += sizeOfChunk) {
         chunkedArray.push(filesArr.slice(i, i + sizeOfChunk));
       }
       return chunkedArray;
@@ -358,9 +358,16 @@ export default class App extends Component {
       return new Promise((resolve, reject) => {
         const arr5 = prepareFilesArrayIntoChunks(filesArr, 5);
         console.log(arr5);
-        let a = filesArr.map(file =>
-          downloadOne(file)
-        );
+        let a = arr5.map(b => {
+          return new Promise((resolve, reject) => {
+            console.log('Novih pet');
+            let chunkPromisa = b.map(file => {
+              return downloadOne(file)
+              .then(() => { console.log('gotovo 5');resolve()});
+            });
+          })
+          return Promise.all(chunkPromisa);
+        });
         this.setState({ downloadedL: a.length });
         Promise.all(a)
           .then(() => console.log('All downloads finished!'))
@@ -368,6 +375,8 @@ export default class App extends Component {
           .then(() => RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8'))
           .then(() => resolve())
           .catch(err => console.log('Greska kod downloadFIles(): ' + err))
+
+
       })
     }
     akoImaNeta = () => {
@@ -419,17 +428,17 @@ export default class App extends Component {
     fetch(projectJsonURL)
       .then(res => res.json())
       .then(res => {
-        if(res.project.lastChanges == global.projectJson.project.lastChanges)
-        Alert.alert('App is already up to date!', '', [{ text: 'OK', onPress: () => {  } }])
+        if (res.project.lastChanges == global.projectJson.project.lastChanges)
+          Alert.alert('App is already up to date!', '', [{ text: 'OK', onPress: () => { } }])
         else {
-          Alert.alert('There seems to be update.!', 'Do you wish to sync?', [{text: 'OK', onPress: () => { RNRestart.Restart(); }}, {text: 'Cancel', onPress: () => {  }}]);
+          Alert.alert('There seems to be update.!', 'Do you wish to sync?', [{ text: 'OK', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
         }
       })
       .then(() => console.log('OKINUO TAJMER'));
   }
 
   componentDidMount() {
-    BackgroundTimer.runBackgroundTimer(this.syncApp, 1000*60*60*24);
+    BackgroundTimer.runBackgroundTimer(this.syncApp, 1000 * 60 * 60 * 24);
   }
 
   calcProgress() {
