@@ -344,9 +344,20 @@ export default class App extends Component {
       })
     }
 
+    prepareFilesArrayIntoChunks = (filesArr, sizeOfChunk) => {
+      console.log('Chunking in progress');
+      let chunkedArray = [];
+      for(let i = 0; i < filesArr.length; i += sizeOfChunk) {
+        chunkedArray.push(filesArr.slice(i, i + sizeOfChunk));
+      }
+      return chunkedArray;
+    }
+
     downloadFiles = (filesArr) => {
       console.log('usao u downloadFiles()')
       return new Promise((resolve, reject) => {
+        const arr5 = prepareFilesArrayIntoChunks(filesArr, 5);
+        console.log(arr5);
         let a = filesArr.map(file =>
           downloadOne(file)
         );
@@ -359,7 +370,6 @@ export default class App extends Component {
           .catch(err => console.log('Greska kod downloadFIles(): ' + err))
       })
     }
-
     akoImaNeta = () => {
       projectJsonLogic()
         .then(() => contentJsonLogic())
