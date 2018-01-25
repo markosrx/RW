@@ -39,17 +39,18 @@ export default class Header extends Component {
 
   syncApp() {
     const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
-    RNFB.fs.readFile(RNFB.fs.dirs.DocumentDir + '/checkedFiles.json', 'utf8')
+    const pathToCheckedFiles = RNFB.fs.dirs.DocumentDir + '/checkedFiles.json';
+    RNFB.fs.readFile(pathToCheckedFiles, 'utf8')
       .then((res) => JSON.parse(res))
       .then(fajlic => {
         fetch(projectJsonURL)
           .then(res => res.json())
           .then(res => {
-            let neSkinutiFajlovi = fajlic.failedDownloads.length > 0 ? 'But there seems to be ' + fajlic.failedDownloads.length + ' missing files.' : '';
+            let neSkinutiFajlovi = fajlic.failedDownloads.length > 0 ? 'There seems to be ' + fajlic.failedDownloads.length + ' missing files. Try syncing the app. \nIf this problem persists, that means files are missing from the server. \nContact your admin to fix it.' : 'Seems everything is OK. If you want you can restart application anyway.';
             if (res.project.lastChanges == global.projectJson.project.lastChanges)
-              Alert.alert('App is already up to date!', neSkinutiFajlovi, [{ text: 'Restart', onPress: () => { RNRestart.Restart(); } }, {text: 'Cancel', onPress: () => {  }}])
+              Alert.alert('UP TO DATE!', neSkinutiFajlovi, [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, {text: 'Cancel', onPress: () => {  }}])
             else {
-              Alert.alert('There seems to be update.!', 'Do you wish to sync?', [{ text: 'OK', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
+              Alert.alert('There seems to be update!', 'Do you wish to sync?', [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
             }
           })
       })

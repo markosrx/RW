@@ -231,7 +231,12 @@ export default class App extends Component {
             }
 
           })
-          .catch((err) => { /*this.setState({ visibleDownloadError: true });*/ return resolve() })
+          .catch((err) => {
+            console.log('Fajl koruptovan: ' + file.fileId);
+            checkedFiles.failedDownloads.push(file);
+            RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8');
+            return resolve()
+          })
       })
     }
 
@@ -262,7 +267,7 @@ export default class App extends Component {
             const speedBenchmarkFile = server + projectJson.project.speedBenchmarkFile;
             console.log(speedBenchmarkFile);
             // path to speed
-            const pathToSpeedBenchmarkFile = dirs.PictureDir + 'benchmark666.jpg';
+            const pathToSpeedBenchmarkFile = dirs.DocumentDir + '/benchmark666.jpg';
             const timeBeforeDownload = Date.now();
             // const nekiTest = 'http://ipv4.download.thinkbroadband.com/5MB.zip'
             RNFB.config({ path: pathToSpeedBenchmarkFile }).fetch('GET', speedBenchmarkFile)
@@ -345,7 +350,6 @@ export default class App extends Component {
     }
 
     prepareFilesArrayIntoChunks = (filesArr, sizeOfChunk) => {
-      console.log('Chunking in progress');
       let chunkedArray = [];
       for (let i = 0; i < filesArr.length; i += sizeOfChunk) {
         chunkedArray.push(filesArr.slice(i, i + sizeOfChunk));
@@ -353,22 +357,28 @@ export default class App extends Component {
       return chunkedArray;
     }
 
+    chunkDownload = (c) => {
+      return new Promise((resolve, reject) => {
+        let a = c.map(file =>
+          downloadOne(file)
+        )
+        Promise.all(a)
+          .then(() => resolve())
+      })
+    }
+
     downloadFiles = (filesArr) => {
       console.log('usao u downloadFiles()')
       return new Promise((resolve, reject) => {
-        const arr5 = prepareFilesArrayIntoChunks(filesArr, 5);
-        console.log(arr5);
-        let a = arr5.map(b => {
-          return new Promise((resolve, reject) => {
-            console.log('Novih pet');
-            let chunkPromisa = b.map(file => {
-              return downloadOne(file)
-              .then(() => { console.log('gotovo 5');resolve()});
-            });
-          })
-          return Promise.all(chunkPromisa);
-        });
-        this.setState({ downloadedL: a.length });
+        let b = prepareFilesArrayIntoChunks(filesArr, 5);
+        let a = b.map(chunk =>
+          chunkDownload(chunk)
+            .then(() => console.log('zavrsio 5'))
+        );
+        /*let a = filesArr.map(file =>
+          downloadOne(file)
+        );*/
+        this.setState({ downloadedL: filesArr.length });
         Promise.all(a)
           .then(() => console.log('All downloads finished!'))
           .then(() => checkedFiles.allDownloaded = true)
@@ -405,7 +415,20 @@ export default class App extends Component {
         })
     }
 
-    NetInfo.isConnected.fetch()
+    isNetworkConnected = () => {
+      if (Platform.OS === 'ios') {
+        return new Promise(resolve => {
+          const handleFirstConnectivityChangeIOS = isConnected => {
+            NetInfo.isConnected.removeEventListener('connectionChange', handleFirstConnectivityChangeIOS);
+            resolve(isConnected);
+          };
+          NetInfo.isConnected.addEventListener('connectionChange', handleFirstConnectivityChangeIOS);
+        });
+      }
+      return NetInfo.isConnected.fetch();
+    }
+
+    isNetworkConnected()
       .then(res => {
         if (res) {
           akoImaNeta();
@@ -425,16 +448,20 @@ export default class App extends Component {
 
   syncApp() {
     const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
-    fetch(projectJsonURL)
-      .then(res => res.json())
-      .then(res => {
-        if (res.project.lastChanges == global.projectJson.project.lastChanges)
-          Alert.alert('App is already up to date!', '', [{ text: 'OK', onPress: () => { } }])
-        else {
-          Alert.alert('There seems to be update.!', 'Do you wish to sync?', [{ text: 'OK', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
-        }
+    RNFB.fs.readFile(RNFB.fs.dirs.DocumentDir + '/checkedFiles.json', 'utf8')
+      .then((res) => JSON.parse(res))
+      .then(fajlic => {
+        fetch(projectJsonURL)
+          .then(res => res.json())
+          .then(res => {
+            let neSkinutiFajlovi = fajlic.failedDownloads.length > 0 ? 'But there seems to be ' + fajlic.failedDownloads.length + ' missing files. If this problem persists, that means files are missing from the server. Contact your admin to fix it.' : 'Seems everything is OK. \nIf you want you can restart application anyway.';
+            if (res.project.lastChanges == global.projectJson.project.lastChanges)
+              Alert.alert('App is already up to date!', neSkinutiFajlovi, [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }])
+            else {
+              Alert.alert('There seems to be update!', 'Do you wish to sync?', [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
+            }
+          })
       })
-      .then(() => console.log('OKINUO TAJMER'));
   }
 
   componentDidMount() {

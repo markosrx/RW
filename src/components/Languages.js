@@ -11,16 +11,8 @@ class Languages extends Component {
         startPage = global.globalJson.startPages.find(l => {
             return l.languageId == lang.languageId
         })
+        startPage = startPage ? startPage : lang;
         Actions.reset('home', {startPage: startPage.pageId});
-        /*Alert.alert(
-            'Change language to:',
-            '' + lang.language,
-            [
-                { text: 'Change language', onPress: () => Actions.reset('home', {startPage: startPage}) },
-                { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
-            ],
-            { cancelable: false }
-        )*/
     }
 
     openLanguage = () => {
