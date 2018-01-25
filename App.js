@@ -231,7 +231,12 @@ export default class App extends Component {
             }
 
           })
-          .catch((err) => { /*this.setState({ visibleDownloadError: true });*/ return resolve() })
+          .catch((err) => { 
+            console.log('Fajl koruptovan: ' + file.fileId);
+            checkedFiles.failedDownloads.push(file);
+            RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8');
+            return resolve() 
+          })
       })
     }
 
@@ -386,7 +391,20 @@ export default class App extends Component {
         })
     }
 
-    NetInfo.isConnected.fetch()
+    isNetworkConnected = () => {
+      if (Platform.OS === 'ios') {
+        return new Promise(resolve => {
+          const handleFirstConnectivityChangeIOS = isConnected => {
+            NetInfo.isConnected.removeEventListener('change', handleFirstConnectivityChangeIOS);
+            resolve(isConnected);
+          };
+          NetInfo.isConnected.addEventListener('change', handleFirstConnectivityChangeIOS);
+        });
+      }
+      return NetInfo.isConnected.fetch();
+    }
+
+    isNetworkConnected()
       .then(res => {
         if (res) {
           akoImaNeta();
