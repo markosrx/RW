@@ -210,10 +210,13 @@ export default class App extends Component {
     }
 
     downloadOne = (file) => {
+
       return new Promise((resolve, reject) => {
         let t0 = Date.now();
+        console.log('poceo skidanje fajla: ' + file.fileId);
         RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId + '?deviceId=' + deviceId)
           .then(r => {
+            console.log('Jedan fajl sa ID: ' + file.fileId + ' ima status kod: ' + r.info().status);
             if (r.info().status == 200) {
               console.log('One file downloaded at ', r.path() + ', with status code: ' + r.info().status);
               let t1 = Date.now();
@@ -223,8 +226,13 @@ export default class App extends Component {
               let dlSpeed = sizeOne / time;
               global.averageSpeed = 0.001 * dlSpeed + (1 - 0.001) * global.averageSpeed;
               return resolve();
-            } else {
+            } else if (r.info().status == 404) {
               console.log('Fajl ne postoji: ' + file.fileId);
+              checkedFiles.failedDownloads.push(file);
+              RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8');
+              return resolve();
+            } else {
+              console.log('Neka druga greska');
               checkedFiles.failedDownloads.push(file);
               RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8');
               return resolve();
@@ -367,19 +375,40 @@ export default class App extends Component {
       })
     }
 
+    function processArray(array, fn) {
+      var index = 0;
+  
+      return new Promise((resolve, reject) => {
+  
+          function next() {
+              if (index < array.length) {
+                  fn(array[index++]).then(next, reject);
+              } else {
+                  resolve();
+              }
+          }
+          next();
+      })
+  }
+
+
     downloadFiles = (filesArr) => {
       console.log('usao u downloadFiles()')
       return new Promise((resolve, reject) => {
-        let b = prepareFilesArrayIntoChunks(filesArr, 5);
+        /*let b = prepareFilesArrayIntoChunks(filesArr, 1);
         let a = b.map(chunk =>
           chunkDownload(chunk)
             .then(() => console.log('zavrsio 5'))
-        );
+        );*/
+
+
+
         /*let a = filesArr.map(file =>
           downloadOne(file)
         );*/
         this.setState({ downloadedL: filesArr.length });
-        Promise.all(a)
+        //Promise.all(a)
+        processArray(filesArr, downloadOne)
           .then(() => console.log('All downloads finished!'))
           .then(() => checkedFiles.allDownloaded = true)
           .then(() => RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8'))
