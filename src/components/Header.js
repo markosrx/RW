@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, StatusBar, TouchableWithoutFeedback, Alert } from 'react-native';
+import { StyleSheet, View, Image, StatusBar, TouchableWithoutFeedback, Alert, Text } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import HTML from 'react-native-render-html';
 import RNRestart from 'react-native-restart';
@@ -23,7 +23,7 @@ export default class Header extends Component {
     this.props.onPress();
   };
   openFolder = () => {
-    Alert.alert('You opened Folder')
+    this.test();
   };
   openSettings = () => {
     this.props.onPressSettings();
@@ -34,6 +34,19 @@ export default class Header extends Component {
   };
   componentDidMount() {
     StatusBar.setHidden(true);
+  }
+
+  test() {
+    RNFB.fs.exists(RNFB.fs.dirs.DocumentDir + '/1205.jpg')
+    .then((res) => {
+      if(res) {
+        console.log('postoji slika');
+        RNFB.fs.readFile(RNFB.fs.dirs.DocumentDir + '/1205.jpg', 'utf8')
+        .then((res) => { console.log(res) });
+      } else {
+        console.log('ne postoji slika');
+      }
+    })
   }
 
 
@@ -48,7 +61,7 @@ export default class Header extends Component {
           .then(res => {
             let neSkinutiFajlovi = fajlic.failedDownloads.length > 0 ? 'There seems to be ' + fajlic.failedDownloads.length + ' missing files. Try syncing the app. \nIf this problem persists, that means files are missing from the server. \nContact your admin to fix it.' : 'Seems everything is OK. If you want you can restart application anyway.';
             if (res.project.lastChanges == global.projectJson.project.lastChanges)
-              Alert.alert('UP TO DATE!', neSkinutiFajlovi, [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, {text: 'Cancel', onPress: () => {  }}])
+              Alert.alert('UP TO DATE!', neSkinutiFajlovi, [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }])
             else {
               Alert.alert('There seems to be update!', 'Do you wish to sync?', [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
             }

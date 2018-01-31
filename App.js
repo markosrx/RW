@@ -19,6 +19,7 @@ import Orientation from 'react-native-orientation';
 import base64 from 'base-64';
 import BackgroundTimer from 'react-native-background-timer';
 import KeepAwake from 'react-native-keep-awake';
+import _ from 'lodash';
 
 
 export default class App extends Component {
@@ -124,15 +125,16 @@ export default class App extends Component {
           .then(res => {
             if (!res) {
               return resolve([]);
-            } else {
+            } else {   
               RNFB.fs.readFile(pathToCheckedFiles, 'utf8')
                 .then(data => {
-                  if (JSON.parse(data).failedDownloads.length > 0) {
-                    checkedFiles = JSON.parse(data);
+                  data = JSON.parse(data);
+                  if (data.failedDownloads.length > 0) {
+                    checkedFiles = data;
                     console.log('Files missing on server: ');
-                    JSON.parse(data).failedDownloads.forEach(f => console.log(f));
-                    return resolve(JSON.parse(data).failedDownloads);
-                  } else if (JSON.parse(data).allDownloaded) {
+                    data.failedDownloads.forEach(f => console.log(f));
+                    return resolve(data.failedDownloads);
+                  } else if (data.allDownloaded) {
                     return reject('Postoji checkedFiles.')
                   }
                 })
@@ -210,13 +212,10 @@ export default class App extends Component {
     }
 
     downloadOne = (file) => {
-
       return new Promise((resolve, reject) => {
         let t0 = Date.now();
-        console.log('poceo skidanje fajla: ' + file.fileId);
         RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId + '?deviceId=' + deviceId)
           .then(r => {
-            console.log('Jedan fajl sa ID: ' + file.fileId + ' ima status kod: ' + r.info().status);
             if (r.info().status == 200) {
               console.log('One file downloaded at ', r.path() + ', with status code: ' + r.info().status);
               let t1 = Date.now();
@@ -230,11 +229,13 @@ export default class App extends Component {
               console.log('Fajl ne postoji: ' + file.fileId);
               checkedFiles.failedDownloads.push(file);
               RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8');
+              RNFB.fs.unlink(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext);
               return resolve();
             } else {
               console.log('Neka druga greska');
               checkedFiles.failedDownloads.push(file);
               RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8');
+              RNFB.fs.unlink(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext);
               return resolve();
             }
 
@@ -243,6 +244,7 @@ export default class App extends Component {
             console.log('Fajl koruptovan: ' + file.fileId);
             checkedFiles.failedDownloads.push(file);
             RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8');
+            RNFB.fs.unlink(dirs.DocumentDir + '/' + file.fileId + '.' + file.ext);
             return resolve()
           })
       })
@@ -352,6 +354,7 @@ export default class App extends Component {
         );
         //this.setState({ hashingL: a.length });
         Promise.all(a)
+          .then(() => { downloadStage = _.uniqBy(downloadStage, 'fileId'); return Promise.resolve(); })
           .then(() => resolve(downloadStage))
           .catch(err => console.log('Greska kod checkHashFiles()' + err))
       })
@@ -495,7 +498,7 @@ export default class App extends Component {
 
   componentDidMount() {
     console.log('componentDidMount() od App.js');
-    BackgroundTimer.runBackgroundTimer(this.syncApp, 1000 * 60);
+    BackgroundTimer.runBackgroundTimer(this.syncApp, 1000 * 60  * 60 * 24);
   }
 
   calcProgress() {
