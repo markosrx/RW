@@ -19,7 +19,7 @@ class Modall extends Component {
     modalOrNative = () => {
         if (!this.state.modalVisible) {
             return (
-                <View style={{backgroundColor: 'white'}}>
+                <View style={styles.aa}>
                     <TouchableWithoutFeedback onPress={() => this.openModal()}>
                         {this.props.children}
                     </TouchableWithoutFeedback>
