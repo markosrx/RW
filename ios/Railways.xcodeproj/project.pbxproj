@@ -44,6 +44,7 @@
 		108762792A364DA7A7AFDBAD /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72809A0AEE594BE78D1A3357 /* libRCTOrientation.a */; };
 		CE5E112AED1D40D78B7B089F /* libRCTRestart.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 024C8F657F4B4088B78A146E /* libRCTRestart.a */; };
 		A38D62D325C049798EDC3889 /* libRNBackgroundTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BCD3C2C53C9346BCA54370D4 /* libRNBackgroundTimer.a */; };
+		A468D1AC0BD440459E537904 /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B1A767E83344450ACE0CC7F /* libKCKeepAwake.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -286,6 +287,8 @@
 		024C8F657F4B4088B78A146E /* libRCTRestart.a */ = {isa = PBXFileReference; name = "libRCTRestart.a"; path = "libRCTRestart.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		05D2EC3D21F64BF98F8FFACB /* RNBackgroundTimer.xcodeproj */ = {isa = PBXFileReference; name = "RNBackgroundTimer.xcodeproj"; path = "../node_modules/react-native-background-timer/ios/RNBackgroundTimer.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		BCD3C2C53C9346BCA54370D4 /* libRNBackgroundTimer.a */ = {isa = PBXFileReference; name = "libRNBackgroundTimer.a"; path = "libRNBackgroundTimer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		9306D8520E654BC4844FF91B /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; name = "KCKeepAwake.xcodeproj"; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		6B1A767E83344450ACE0CC7F /* libKCKeepAwake.a */ = {isa = PBXFileReference; name = "libKCKeepAwake.a"; path = "libKCKeepAwake.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -322,6 +325,7 @@
 				108762792A364DA7A7AFDBAD /* libRCTOrientation.a in Frameworks */,
 				CE5E112AED1D40D78B7B089F /* libRCTRestart.a in Frameworks */,
 				A38D62D325C049798EDC3889 /* libRNBackgroundTimer.a in Frameworks */,
+				A468D1AC0BD440459E537904 /* libKCKeepAwake.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +501,7 @@
 				57337CC310FC446A8DBC1E12 /* RCTOrientation.xcodeproj */,
 				5916AF53288D4672B3B6AA5E /* RCTRestart.xcodeproj */,
 				05D2EC3D21F64BF98F8FFACB /* RNBackgroundTimer.xcodeproj */,
+				9306D8520E654BC4844FF91B /* KCKeepAwake.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1052,6 +1057,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1062,6 +1068,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-background-timer/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
 				);
 			};
 			name = Debug;
@@ -1090,6 +1097,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1100,6 +1108,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-background-timer/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
 				);
 			};
 			name = Release;
@@ -1128,6 +1137,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-background-timer/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
 				);
 			};
 			name = Debug;
@@ -1155,6 +1165,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-background-timer/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
 				);
 			};
 			name = Release;
@@ -1192,6 +1203,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1202,6 +1214,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-background-timer/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
 				);
 			};
 			name = Debug;
@@ -1239,6 +1252,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1249,6 +1263,7 @@
 					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart/**",
 					"$(SRCROOT)/../node_modules/react-native-background-timer/ios",
+					"$(SRCROOT)/../node_modules/react-native-keep-awake/ios",
 				);
 			};
 			name = Release;
@@ -1281,6 +1296,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -1305,6 +1321,7 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
