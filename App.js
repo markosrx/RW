@@ -18,6 +18,7 @@ import DeviceInfo from 'react-native-device-info';
 import Orientation from 'react-native-orientation';
 import base64 from 'base-64';
 import BackgroundTimer from 'react-native-background-timer';
+import KeepAwake from 'react-native-keep-awake';
 
 
 export default class App extends Component {
@@ -151,7 +152,6 @@ export default class App extends Component {
       return new Promise((resolve, reject) => {
         fetch(contentJsonURL)
           .then(res => res.json())
-          //a()
           .then(res => { fetchedContent = res; return Promise.resolve() })
           .then(() => RNFB.fs.exists(pathToContentJson))
           .then(res => !res ? nePostojiContentJson() : postojiContentJson())
@@ -470,7 +470,8 @@ export default class App extends Component {
   }// End of isLoading()
 
   componentWillMount() {
-    Orientation.lockToLandscape();
+    //Orientation.lockToLandscape();
+    KeepAwake.activate();
     this.isLoading();
   }
 
@@ -493,7 +494,8 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    BackgroundTimer.runBackgroundTimer(this.syncApp, 1000 * 60 * 60 * 24);
+    console.log('componentDidMount() od App.js');
+    BackgroundTimer.runBackgroundTimer(this.syncApp, 1000 * 60);
   }
 
   calcProgress() {

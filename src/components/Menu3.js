@@ -19,8 +19,6 @@ class Menu3 extends Component {
     }
 
     render() {
-
-        let data = JSON.stringify(this.state.filteredPages);
         return (
             <View style={styles.menu3Item}>
                 <TouchableOpacity onPress={() => Actions.reset('HBF',{ from: this.props.menu3, filtered: this.state.filteredPages, selected: this.props.selected })}>

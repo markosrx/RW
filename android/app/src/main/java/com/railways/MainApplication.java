@@ -3,6 +3,7 @@ package com.railways;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.corbt.keepawake.KCKeepAwakePackage;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.avishayil.rnrestart.ReactNativeRestartPackage;
 import com.github.yamill.orientation.OrientationPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new KCKeepAwakePackage(),
             new BackgroundTimerPackage(),
             new ReactNativeRestartPackage(),
             new OrientationPackage(),
