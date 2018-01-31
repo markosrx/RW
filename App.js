@@ -504,7 +504,7 @@ export default class App extends Component {
 
   componentDidMount() {
     console.log('componentDidMount() od App.js');
-    BackgroundTimer.runBackgroundTimer(this.syncApp, 1000 * 60);
+    BackgroundTimer.runBackgroundTimer(this.syncApp, 1000 * 60 * 60 * 24);
   }
 
   calcProgress() {
@@ -537,7 +537,7 @@ export default class App extends Component {
             {this.state.visibleDownload && <Text style={styles.loadText}>Downloaded {this.state.mbDone} MB of {this.state.total} MB.</Text>}
             {this.state.visibleDownload &&
               <Text style={styles.loadText}>
-                Remaining time: {(((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) != 0 ? (((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) + ' min' : (((this.state.total - this.state.mbDone) / global.averageSpeed)).toFixed(0) + ' seconds'}</Text>}
+                Remaining time: {global.averageSpeed && ((((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) != 0 ? (((this.state.total - this.state.mbDone) / global.averageSpeed) / 60).toFixed(0) + ' min' : (((this.state.total - this.state.mbDone) / global.averageSpeed)).toFixed(0) + ' seconds')}</Text>}
 
           </View>
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#4169e1' }} >

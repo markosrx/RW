@@ -127,9 +127,9 @@ class Search extends Component {
             itemL = item.toLowerCase();
             let foundPages = where.filter(x => {
                 if (x.text != null)
-                    return x.text.toLowerCase().includes(itemL) || x.subtitle.toLowerCase().includes(itemL) || x.title.toLowerCase().includes(itemL);
+                    return (x.text.toLowerCase().includes(itemL) || x.subtitle.toLowerCase().includes(itemL) || x.title.toLowerCase().includes(itemL)) && x.languageId == global.language + 1;
                 else if (x.text == null)
-                    return x.subtitle.toLowerCase().includes(itemL) || x.title.toLowerCase().includes(itemL);
+                    return (x.subtitle.toLowerCase().includes(itemL) || x.title.toLowerCase().includes(itemL)) && x.languageId == global.language + 1;
             })
             resolve(foundPages)
         })
@@ -143,11 +143,11 @@ class Search extends Component {
                     e.files.forEach(ei => foundFiles.push(ei))
             })
         resolve(foundFiles);
-    })
+    });
 
     searchPromise = (input) => {
         return new Promise((resolve, reject) => {
-            let idLang = 1 // engleski
+            let idLang = global.language // engleski
 
             let pages = global.globalJson.pages;
             let menus = global.globalJson.menus[idLang].menu;
