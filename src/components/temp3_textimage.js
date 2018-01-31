@@ -5,8 +5,10 @@ import HTML from 'react-native-render-html';
 import Swiper from 'react-native-swiper';
 import VB from './VideoBtn';
 import DB from './DocBtn';
+import Modall from './Modall';
 
 import SwiperFlatList from './SwiperFlatList';
+import { Lightbox } from 'react-native-router-flux';
 export const { width, height } = Dimensions.get('window');
 
 
@@ -52,9 +54,9 @@ export default class TextImage extends Component {
     return this.state.imagesPath.map((pic, i) => {
 
       return <View key={i}>
-        <LightBox style={{ width: '100%', height: '100%' }}>
+        <Modall>
           <Image resizeMethod='resize' style={[styles.swiperPic, { width: w, height: h }]} source={{ uri: pic }} />
-        </LightBox>
+        </Modall>
       </View>
     })
   }

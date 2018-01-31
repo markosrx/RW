@@ -214,7 +214,7 @@ export default class App extends Component {
     downloadOne = (file) => {
       return new Promise((resolve, reject) => {
         let t0 = Date.now();
-        RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.fileId + '?deviceId=' + deviceId)
+        RNFB.config({ path: dirs.DocumentDir + '/' + file.fileId + '.' + file.ext }).fetch('GET', server + global.projectJson.project.contentDir + file.filename + '?deviceId=' + deviceId)
           .then(r => {
             if (r.info().status == 200) {
               console.log('One file downloaded at ', r.path() + ', with status code: ' + r.info().status);

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import LightBox from 'react-native-lightbox';
+import Modall from './Modall';
 
 export default class FullImage extends Component {
 
@@ -15,9 +16,9 @@ export default class FullImage extends Component {
 
             <View style={styles.contentPic}>
 
-            <LightBox style={{width: '100%', height: '100%', }}>
+            <Modall>
               <Image resizeMethod='resize' style={{ width: '100%', height: '100%', resizeMode: 'cover'}} source={{ uri: this.props.files[0] }} />
-            </LightBox>
+            </Modall>
 
             </View>
 

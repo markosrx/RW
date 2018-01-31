@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Dimensions, StatusBar } from 'react-nati
 import VB from './VideoBtn';
 import DB from './DocBtn';
 import LightBox from 'react-native-lightbox';
+import Modall from './Modall';
 
 export default class ImageButtons extends Component {
 
@@ -48,10 +49,9 @@ export default class ImageButtons extends Component {
                     <View style={styles.contentContainer}>
 
                         <View style={styles.contentPic}>
-
-                            <LightBox style={{width: '100%', height: '100%' }}>
+                            <Modall>
                               <Image resizeMethod='resize' style={{width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: this.state.image }}/>
-                            </LightBox>
+                            </Modall>
                        
                             <View style={styles.ButtonContainer}>
                                 {this.state.videoPath.length > 0 && <VB videouri={this.state.videoPath[0]} />}
