@@ -256,6 +256,14 @@ export default class App extends Component {
       })
     }
 
+    getBenchmarkTime = (benchmarkFileURL) => {
+      RNFB.config({path: pathToSpeedBenchmarkFile})
+      .fetch('GET', benchmarkFileURL)
+      .then(benchmarkFile => {
+
+      })
+    }
+
     alertForDownload = (mb) => {
       return new Promise((resolve, reject) => {
         if (!mb) {
