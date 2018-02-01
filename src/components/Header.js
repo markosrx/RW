@@ -23,7 +23,7 @@ export default class Header extends Component {
     this.props.onPress();
   };
   openFolder = () => {
-    this.test();
+    
   };
   openSettings = () => {
     this.props.onPressSettings();
@@ -36,18 +36,6 @@ export default class Header extends Component {
     StatusBar.setHidden(true);
   }
 
-  test() {
-    RNFB.fs.exists(RNFB.fs.dirs.DocumentDir + '/1205.jpg')
-    .then((res) => {
-      if(res) {
-        console.log('postoji slika');
-        RNFB.fs.readFile(RNFB.fs.dirs.DocumentDir + '/1205.jpg', 'utf8')
-        .then((res) => { console.log(res) });
-      } else {
-        console.log('ne postoji slika');
-      }
-    })
-  }
 
 
   syncApp() {

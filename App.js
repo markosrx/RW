@@ -125,14 +125,12 @@ export default class App extends Component {
           .then(res => {
             if (!res) {
               return resolve([]);
-            } else {   
+            } else {
               RNFB.fs.readFile(pathToCheckedFiles, 'utf8')
                 .then(data => {
                   data = JSON.parse(data);
                   if (data.failedDownloads.length > 0) {
                     checkedFiles = data;
-                    console.log('Files missing on server: ');
-                    data.failedDownloads.forEach(f => console.log(f));
                     return resolve(data.failedDownloads);
                   } else if (data.allDownloaded) {
                     return reject('Postoji checkedFiles.')
@@ -267,14 +265,14 @@ export default class App extends Component {
     }
 
     getBenchmarkTime = (benchmarkFileURL) => {
-      RNFB.config({path: pathToSpeedBenchmarkFile})
-      .fetch('GET', benchmarkFileURL)
-      .then(benchmarkFile => {
+      RNFB.config({ path: pathToSpeedBenchmarkFile })
+        .fetch('GET', benchmarkFileURL)
+        .then(benchmarkFile => {
 
-      })
+        })
     }
 
-    alertForDownload = (mb) => {
+    alertForDownload = (mb, niz) => {
       return new Promise((resolve, reject) => {
         if (!mb) {
           reject();
@@ -310,7 +308,19 @@ export default class App extends Component {
                     Alert.alert(
                       'About to download ' + mb + ' MB',
                       '' + warningString + '\n' + 'Estimated time: ' + est + '.\nDo you wish to download?',
-                      [{ text: 'OK', onPress: () => resolve() }, { text: 'Skip', onPress: () => reject() }]
+
+                      [
+                        { text: 'OK', onPress: () => resolve() },
+                        {
+                          text: 'Skip',
+                          onPress: () => {
+                            checkedFiles.allDownloaded = false;
+                            checkedFiles.failedDownloads = niz;
+                            RNFB.fs.writeFile(pathToCheckedFiles, JSON.stringify(checkedFiles), 'utf8');
+                            return reject('Pritisnut reject');
+                          }
+                        }
+                      ], { cancelable: false }
 
                     )
 
@@ -388,19 +398,19 @@ export default class App extends Component {
 
     function processArray(array, fn) {
       var index = 0;
-  
+
       return new Promise((resolve, reject) => {
-  
-          function next() {
-              if (index < array.length) {
-                  fn(array[index++]).then(next, reject);
-              } else {
-                  resolve();
-              }
+
+        function next() {
+          if (index < array.length) {
+            fn(array[index++]).then(next, reject);
+          } else {
+            resolve();
           }
-          next();
+        }
+        next();
       })
-  }
+    }
 
 
     downloadFiles = (filesArr) => {
@@ -435,7 +445,7 @@ export default class App extends Component {
         .then(() => checkForFile())
         .then((a) => checkHashFiles(a))
         .then((niz) => calculateSize(niz)
-          .then((data) => alertForDownload(data))
+          .then((mb) => alertForDownload(mb, niz))
           .then(() => downloadFiles(niz))
         )
         .catch(err => console.log('Catch od glavnog bloka od checkHashFiles: ' + err))

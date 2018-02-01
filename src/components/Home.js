@@ -7,7 +7,7 @@ export default class Home extends Component {
   state = {
     menu: {},
     filtered: [],
-    lang: this.props.lang+1 || 0
+    lang: this.props.lang + 1 || Number(global.projectJson.project.defaultLanguageId) || 0
   };
 
   componentWillMount() {
