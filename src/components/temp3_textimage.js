@@ -54,7 +54,7 @@ export default class TextImage extends Component {
     return this.state.imagesPath.map((pic, i) => {
 
       return <View key={i}>
-        <Modall>
+        <Modall pic={pic}>
           <Image resizeMethod='resize' style={[styles.swiperPic, { width: w, height: h }]} source={{ uri: pic }} />
         </Modall>
       </View>
