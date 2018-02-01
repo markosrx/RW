@@ -11,7 +11,7 @@ export default class Header extends Component {
     this.props.onPressLang();
   };
   openHome = () => {
-    Actions.reset('home')
+    Actions.reset('home', { lang: global.language })
   };
   openFavorites = () => {
     Actions.reset('login')

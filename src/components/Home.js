@@ -6,14 +6,18 @@ export default class Home extends Component {
 
   state = {
     menu: {},
-    filtered: []
+    filtered: [],
+    lang: this.props.lang+1 || 0
   };
 
   componentWillMount() {
-    let a = this.props.startPage ? this.findStartPage(this.props.startPage) : this.findStartPage(global.globalJson.startPages[0].pageId);
-
-    if(!this.props.startPage) {
-      a = this.findStartPage(global.globalJson.startPages[0].pageId);
+    //let a = this.props.startPage ? this.findStartPage(this.props.startPage) : this.findStartPage(global.globalJson.startPages[0].pageId);
+    let a;
+    if(this.props.lang) {
+      let b = global.globalJson.startPages.findIndex(e => e.languageId == this.state.lang);
+      a = this.findStartPage(global.globalJson.startPages[b].pageId);
+    } else if(!this.props.startPage) {
+      a = this.findStartPage(global.globalJson.startPages[this.state.lang].pageId);
     } else if (this.props.startPage.language) {
       let c = global.globalJson.pages.find(p => p.languageId == this.props.startPage.languageId);
       a = this.findStartPage(c.pageId);
