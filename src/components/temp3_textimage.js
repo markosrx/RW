@@ -19,7 +19,8 @@ export default class TextImage extends Component {
     documentPath: [],
     imagesPath: [],
     startSwiper: false,
-    dimensions: undefined
+    dimensions: undefined,
+    modal: false
   }
 
   onLayout(event) {
@@ -50,14 +51,32 @@ export default class TextImage extends Component {
     //setTimeout(() => {this.setState({ startSwiper: true })}, 500);
   }
 
+  modalPress() {
+    this.setState({ modal: !this.state.modal });
+  }
+
+
+
   renderPics(w, h) {
     return this.state.imagesPath.map((pic, i) => {
+      if (!this.state.modal) {
+        return (
+          <View key={i}>
+            <Modall pic={pic} modalPress={this.modalPress.bind(this)}>
+              <Image resizeMethod='resize' style={[styles.swiperPic, { width: w, height: h }]} source={{ uri: pic }} />
+            </Modall>
+          </View>
+        );
+      } else {
+        return (
+          <View key={i} style={{backgroundColor:'white', width: w, height: h}}>
+            <Modall pic={pic} modalPress={this.modalPress.bind(this)}>
+              <Image resizeMethod='resize' style={[styles.swiperPic, { width: w, height: h }]} source={{ uri: pic }} />
+            </Modall>
+          </View>
+        );
+      }
 
-      return <View key={i}>
-        <Modall pic={pic}>
-          <Image resizeMethod='resize' style={[styles.swiperPic, { width: w, height: h }]} source={{ uri: pic }} />
-        </Modall>
-      </View>
     })
   }
 

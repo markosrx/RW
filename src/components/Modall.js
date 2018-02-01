@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, View, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+//import Modal from 'react-native-modal';
 
 class Modall extends Component {
 
@@ -13,7 +14,13 @@ class Modall extends Component {
 
     openModal() {
         this.setState({ dark: true, modalVisible: true })
-            //.then(() => this.setState({}));
+        //.then(() => this.setState({}));
+    }
+
+    temp3()  {
+        if(this.props.modalPress) {
+            this.props.modalPress();
+        }
     }
 
 
@@ -21,33 +28,34 @@ class Modall extends Component {
         if (!this.state.modalVisible) {
             return (
                 <View style={styles.aa}>
-                    <TouchableWithoutFeedback onPress={() => this.openModal()}>
+                    <TouchableWithoutFeedback onPress={() => { this.temp3(); this.openModal()}}>
                         {this.props.children}
                     </TouchableWithoutFeedback>
                 </View>
             );
-        } else if (this.props.pic && this.state.modalVisible) {
+        } 
+        else if (this.props.pic && this.state.modalVisible) {
             return (
-                <View style={styles.dark}>
-                    <Modal
-                        onRequestClose={() => this.closeModal()}
-                        animationType={'fade'}
-                        visible={this.state.modalVisible}
-                    >
-                        <View style={styles.aa}>
-                            <TouchableWithoutFeedback onPress={() => this.closeModal()}>
-                                <Image resizeMethod='resize' style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: this.props.pic }} />
-                            </TouchableWithoutFeedback>
-                        </View>
-                    </Modal>
-                </View>
+                <Modal
+                    onRequestClose={() => this.closeModal()}
+                    visible={this.state.modalVisible}
+                    animationType={'none'}
+
+                >
+                    <View style={styles.aa}>
+                        <TouchableWithoutFeedback onPress={() => {this.temp3(); this.closeModal()} } >
+                            <Image resizeMethod='resize' style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: this.props.pic }} />
+                        </TouchableWithoutFeedback>
+                    </View>
+                </Modal>
+
             );
         } else {
             return (
                 <Modal
                     onRequestClose={() => this.closeModal()}
-                    animationType={'fade'}
                     visible={this.state.modalVisible}
+                    animationType={'none'}
                 >
                     <View style={styles.aa}>
                         <TouchableWithoutFeedback onPress={() => this.closeModal()}>
@@ -85,7 +93,7 @@ const styles = {
         backgroundColor: 'black',
         width: '100%',
         height: '100%',
-        
+
     }
 }
 
