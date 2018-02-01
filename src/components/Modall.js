@@ -28,7 +28,7 @@ class Modall extends Component {
         if (!this.state.modalVisible) {
             return (
                 <View style={styles.aa}>
-                    <TouchableWithoutFeedback onPress={() => { this.temp3(); this.openModal()}}>
+                    <TouchableWithoutFeedback onPress={() => this.openModal()}>
                         {this.props.children}
                     </TouchableWithoutFeedback>
                 </View>
@@ -39,11 +39,11 @@ class Modall extends Component {
                 <Modal
                     onRequestClose={() => this.closeModal()}
                     visible={this.state.modalVisible}
-                    animationType={'none'}
+                    animationType={'fade'}
 
                 >
                     <View style={styles.aa}>
-                        <TouchableWithoutFeedback onPress={() => {this.temp3(); this.closeModal()} } >
+                        <TouchableWithoutFeedback onPress={() => this.closeModal()}  >
                             <Image resizeMethod='resize' style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: this.props.pic }} />
                         </TouchableWithoutFeedback>
                     </View>
@@ -55,7 +55,7 @@ class Modall extends Component {
                 <Modal
                     onRequestClose={() => this.closeModal()}
                     visible={this.state.modalVisible}
-                    animationType={'none'}
+                    animationType={'fade'}
                 >
                     <View style={styles.aa}>
                         <TouchableWithoutFeedback onPress={() => this.closeModal()}>
