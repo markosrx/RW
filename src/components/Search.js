@@ -39,14 +39,19 @@ class Search extends Component {
         switch (this.state.buttonActive) {
             case 'content':
                 rat = this.state.searchPages.map((element, i) => {
-
+                    const breadcrumb = this.getBreadcrumb(element.menuId);
                     return <TouchableOpacity key={i} onPress={() => Actions.reset('HBF', { from: this.searchMenu(element.menuId), filtered: Array(element) })}>
                         <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', borderBottomWidth: 3, borderColor: '#dddddd' }}>
                             <Image
                                 style={{ height: 60, width: 75, marginRight: 20 }}
                                 source={{ uri: 'file://' + this.pageImageHelper(element.pageId) }}
                             />
-                            <Text style={{ fontSize: 25 }} key={element.pageId}>{element.title}</Text>
+                            <View style={{ flexDirection: 'column' }}>
+                                <Text style={{ fontSize: 25 }} key={element.pageId}>
+                                    {element.title};
+                        </Text>
+                                <Text>{breadcrumb}</Text>
+                            </View>
                         </View>
                     </TouchableOpacity>
 
@@ -54,15 +59,18 @@ class Search extends Component {
                 break;
             case 'video':
                 rat = this.state.searchFiles.map((element, i) => {
+                    const breadcrumb = this.getBreadcrumb(this.pageTitleHelperForFile(element.pageId).menuId);
                     if (element.type == 'video')
-
                         return <TouchableOpacity key={i} onPress={() => Actions.VideoView({ videouri: 'file://' + RNFB.fs.dirs.DocumentDir + '/' + element.fileId + '.' + element.ext })}>
                             <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', borderBottomWidth: 3, borderColor: '#dddddd' }}>
                                 <Image
                                     style={{ height: 60, width: 75, marginRight: 20 }}
                                     source={{ uri: 'file://' + this.pageImageHelper(element.pageId) }}
                                 />
-                                <Text style={{ fontSize: 25 }} key={element.filename}>{this.pageTitleHelperForFile(element.pageId).title}</Text>
+                                <View style={{ display: 'flex', flexDirection: 'column' }}>
+                                    <Text style={{ fontSize: 25 }} key={element.filename}>{this.pageTitleHelperForFile(element.pageId).title}</Text>
+                                    <Text>{breadcrumb}</Text>
+                                </View>
                             </View>
                         </TouchableOpacity>
                 });
@@ -99,7 +107,7 @@ class Search extends Component {
             if (page.files.length > 0) {
                 page.files.forEach(e => {
                     let dirs = RNFB.fs.dirs;
-                    file = dirs.DocumentDir + '/' + e.fileId + '.' + e.ext;
+                    file = dirs.DocumentDir + ' -> ' + e.fileId + '.' + e.ext;
                 })
             }
         return file;
@@ -133,6 +141,16 @@ class Search extends Component {
             })
             resolve(foundPages)
         })
+    }
+
+    getBreadcrumb = (menuId, start = '') => {
+        let foundMenu = this.searchMenu(menuId)
+        if (foundMenu.depth == 1) {
+            return foundMenu.title + ' > ' + start;
+        } else {
+            return this.getBreadcrumb(foundMenu.parentId, foundMenu.title);
+        }
+
     }
 
     searchDoFiles = (where) => new Promise((resolve, reject) => {
