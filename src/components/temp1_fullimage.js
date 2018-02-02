@@ -5,13 +5,6 @@ import Modall from './Modall';
 
 export default class FullImage extends Component {
 
-  checkPic = () => {
-    if (this.props.files[0] === 'file:///data/user/0/com.railways/files/1042.jpg') {
-      return true
-    } else {
-      return false
-    }
-  }
   render() {
     return (
       <View style={styles.mainView}>
