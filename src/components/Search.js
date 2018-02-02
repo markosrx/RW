@@ -107,7 +107,7 @@ class Search extends Component {
             if (page.files.length > 0) {
                 page.files.forEach(e => {
                     let dirs = RNFB.fs.dirs;
-                    file = dirs.DocumentDir + ' -> ' + e.fileId + '.' + e.ext;
+                    file = dirs.DocumentDir + '/' +  e.filename;
                 })
             }
         return file;
