@@ -6,20 +6,16 @@ import Modall from './Modall';
 export default class FullImage extends Component {
 
   render() {
-
     return (
       <View style={styles.mainView}>
 
         <View style={styles.body}>
 
           <View style={styles.contentContainer}>
-
             <View style={styles.contentPic}>
-
-            <Modall>
-              <Image resizeMethod='resize' style={{ width: '100%', height: '100%', resizeMode: 'cover'}} source={{ uri: this.props.files[0] }} />
-            </Modall>
-
+              <Modall>
+                <Image resizeMethod='scale' style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: this.props.files[0] }} />
+              </Modall>
             </View>
 
           </View>

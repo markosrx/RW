@@ -52,7 +52,7 @@ export default class TextImage extends Component {
         return (
           <View key={i} style={{backgroundColor:'white', width: w, height: h}}>
             <Modall pic={pic}>
-              <Image resizeMethod='resize' style={[styles.swiperPic, { width: w, height: h }]} source={{ uri: pic }} />
+              <Image resizeMethod='scale' style={[styles.swiperPic, { width: w, height: h , resizeMode:'cover'}]} source={{ uri: pic }} />
             </Modall>
           </View>
         );
