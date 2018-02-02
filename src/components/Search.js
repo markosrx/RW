@@ -197,62 +197,62 @@ class Search extends Component {
 
             <View style={styles.searchCont} >
 
-                <View>
+                <View style={{ flex: 1 }}>
                     <View style={{ alignItems: 'center', padding: 20 }}>
-                        <Text style={{ color: '#595959', fontSize: 20 }}>Choose the Category:</Text>
-                    </View>
-                    <View style={styles.ButtonsView}>
-                        <TouchableOpacity style={[styles.ButtonContent, { backgroundColor: this.state.content ? 'white' : '#dddddd' }]} onPress={() => this.setState({ buttonActive: 'content', content: true, video: false })}>
-
-
-                            <Image
-                                style={styles.ButtonIconStyle2}
-                                source={require('./ico/32/rnd.png')}
-                            />
-                            <Text style={styles.ButtonTextStyle}>CONTENT</Text>
-                        </TouchableOpacity >
-
-                        <TouchableOpacity style={[styles.ButtonContent, { backgroundColor: this.state.video ? 'white' : '#dddddd' }]} onPress={() => this.setState({ buttonActive: 'video', video: true, content: false })}>
-
-                            <Image
-                                style={styles.ButtonIconStyle2}
-                                source={require('./ico/32/play.png')}
-
-                            />
-                            <Text style={styles.ButtonTextStyle}>VIDEO</Text>
-                        </TouchableOpacity >
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 30, }}>
-                        <TouchableOpacity>
-                            <Image
-                                style={{ width: 32, height: 32 }}
-                                source={require('./ico/32/search-2.png')}
-                            />
-                        </TouchableOpacity>
-                        <View style={{ padding: 10 }}>
-                            <TextInput
-                                keyboardType='default'
-                                placeholder="Search"
-                                style={styles.textInput}
-                                onChangeText={(text) => {
-                                    this.setState({ text });
-                                    this.callMe(text)
-                                }}
-                                value={this.state.text}
-                            />
-                        </View>
-                        <TouchableOpacity onPress={Keyboard.dismiss}>
-                            <Image
-                                style={{ width: 32, height: 32 }}
-                                source={require('./ico/32/right.png')}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                    <ScrollView>
-                        {this.createObject()}
-                    </ScrollView>
+                    <Text style={{ color: '#595959', fontSize: 20 }}>Choose the Category:</Text>
                 </View>
+                <View style={styles.ButtonsView}>
+                    <TouchableOpacity style={[styles.ButtonContent, { backgroundColor: this.state.content ? 'white' : '#dddddd' }]} onPress={() => this.setState({ buttonActive: 'content', content: true, video: false })}>
+
+
+                        <Image
+                            style={styles.ButtonIconStyle2}
+                            source={require('./ico/32/rnd.png')}
+                        />
+                        <Text style={styles.ButtonTextStyle}>CONTENT</Text>
+                    </TouchableOpacity >
+
+                    <TouchableOpacity style={[styles.ButtonContent, { backgroundColor: this.state.video ? 'white' : '#dddddd' }]} onPress={() => this.setState({ buttonActive: 'video', video: true, content: false })}>
+
+                        <Image
+                            style={styles.ButtonIconStyle2}
+                            source={require('./ico/32/play.png')}
+
+                        />
+                        <Text style={styles.ButtonTextStyle}>VIDEO</Text>
+                    </TouchableOpacity >
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 30, }}>
+                    <TouchableOpacity>
+                        <Image
+                            style={{ width: 32, height: 32 }}
+                            source={require('./ico/32/search-2.png')}
+                        />
+                    </TouchableOpacity>
+                    <View style={{ padding: 10 }}>
+                        <TextInput
+                            keyboardType='default'
+                            placeholder="Search"
+                            style={styles.textInput}
+                            onChangeText={(text) => {
+                                this.setState({ text });
+                                this.callMe(text)
+                            }}
+                            value={this.state.text}
+                        />
+                    </View>
+                    <TouchableOpacity onPress={Keyboard.dismiss}>
+                        <Image
+                            style={{ width: 32, height: 32 }}
+                            source={require('./ico/32/right.png')}
+                        />
+                    </TouchableOpacity>
+                </View>
+                <ScrollView>
+                    {this.createObject()}
+                </ScrollView>
             </View>
+            </View >
         );
     }
 }
