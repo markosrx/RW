@@ -20,6 +20,10 @@ import base64 from 'base-64';
 import BackgroundTimer from 'react-native-background-timer';
 import KeepAwake from 'react-native-keep-awake';
 import _ from 'lodash';
+setTimeout = BackgroundTimer.setTimeout.bind(BackgroundTimer)
+setInterval = BackgroundTimer.setInterval.bind(BackgroundTimer)
+clearTimeout = BackgroundTimer.clearTimeout.bind(BackgroundTimer)
+clearInterval = BackgroundTimer.clearInterval.bind(BackgroundTimer)
 
 
 export default class App extends Component {
@@ -27,7 +31,7 @@ export default class App extends Component {
   constructor() {
     super();
 
-    console.ignoredYellowBox = ['Setting a timer'];
+    // console.ignoredYellowBox = ['Setting a timer'];
   }
 
   state = {

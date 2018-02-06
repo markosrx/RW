@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, StatusBar, TouchableWithoutFeedback, Alert, Text } from 'react-native';
+import { StyleSheet, View, Image, StatusBar, TouchableWithoutFeedback, Alert, Text, ActivityIndicator } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import HTML from 'react-native-render-html';
 import RNRestart from 'react-native-restart';
 import RNFB from 'react-native-fetch-blob';
 
 export default class Header extends Component {
+
+  state = {
+    syncLoading: false
+  };
 
   openLanguage = () => {
     this.props.onPressLang();
@@ -39,6 +43,7 @@ export default class Header extends Component {
 
 
   syncApp() {
+    this.setState({ syncLoading: true });
     const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
     const pathToCheckedFiles = RNFB.fs.dirs.DocumentDir + '/checkedFiles.json';
     RNFB.fs.readFile(pathToCheckedFiles, 'utf8')
@@ -54,7 +59,19 @@ export default class Header extends Component {
               Alert.alert('There seems to be update!', 'Do you wish to sync?', [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
             }
           })
+          .then(() => this.setState({syncLoading: false}))
+          .catch(() => { this.setState({ syncLoading: false }); Alert.alert('Error', 'Something went wrong. Please check your internet connection, restart the app, or try again later.', [{ text: 'OK', onPress: () => {  } }]);  });
       })
+  }
+
+  syncOrSpinner = () => {
+    if(this.state.syncLoading) {
+      return <ActivityIndicator size={'small'} />
+    }
+
+    return (
+      <TouchableWithoutFeedback onPress={this.syncFiles}><Image style={styles.ico} source={require('./ico/32/sync.png')} /></TouchableWithoutFeedback>
+    );
   }
 
 
@@ -78,7 +95,7 @@ export default class Header extends Component {
             <TouchableWithoutFeedback onPress={this.openMenu}><Image style={styles.ico} source={require('./ico/32/menu.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openSearch}><Image style={styles.ico} source={require('./ico/32/search.png')} /></TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={this.openFolder}><Image style={styles.ico} source={require('./ico/32/folder.png')} /></TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={this.syncFiles}><Image style={styles.ico} source={require('./ico/32/sync.png')} /></TouchableWithoutFeedback>
+            {this.syncOrSpinner()}
             <TouchableWithoutFeedback onPress={this.openSettings}><Image style={styles.ico} source={require('./ico/32/settings.png')} /></TouchableWithoutFeedback>
 
           </View>
