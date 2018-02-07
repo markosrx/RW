@@ -47,7 +47,7 @@ class HBF extends Component {
                 <Body pages={this.props.filtered} />
 
 
-                <View style={{ position: 'absolute', bottom: this.state.visibleMenu ? '7%' : -500 }}>
+                <View style={{ position: 'absolute', bottom: this.state.visibleMenu ? '7%' : -500, width: '100%' }}>
                     <MenuList selected={this.props.selected} data={global.globalJson} from={this.props.from.menuId} />
                 </View>
 
