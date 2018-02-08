@@ -1,47 +1,46 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, TouchableWithoutFeedback, WebView, Dimensions, Platform, PlatformIOS } from 'react-native';
+import { StyleSheet, View, Image, TouchableWithoutFeedback, WebView, Dimensions, Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import PDF from 'react-native-pdf';
 
 export default class DocumentView extends Component {
 
-
-
-
+    
     render() {
-        if (PlatformIOS) {
+        if (Platform.OS === 'ios') {
             return (
                 <View style={styles.mainView}>
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
-                        <TouchableWithoutFeedback onPress={() => Actions.pop()}><Image style={styles.ico} source={require('./ico/32/back.png')} /></TouchableWithoutFeedback>
+                        <TouchableWithoutFeedback onPress={() => Actions.pop()}>
+                            <Image style={styles.ico} source={require('./ico/32/back.png')} />
+                        </TouchableWithoutFeedback>
                     </View>
-
-                    <View style={{ flex: 12, alignItems: 'center' }}>
+                    <View style={{ flex: 12 }}>
                         <PDF
                             source={{ uri: this.props.docuri }}
                             fitPolicy={0}>
                         </PDF>
                     </View>
-                </View>
-            );
+                </View>);
+
+        } else {
+            return (
+                <View style={styles.mainView}>
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
+                        <TouchableWithoutFeedback onPress={() => Actions.pop()}>
+                            <Image style={styles.ico} source={require('./ico/32/back.png')} />
+                        </TouchableWithoutFeedback>
+                    </View>
+                    <View style={{ flex: 12, alignItems: 'center' }}>
+                        <PDF
+                            source={{ uri: this.props.docuri }}
+                            fitPolicy={0}
+                            style={styles.pdf} />
+                    </View>
+                </View>);
         }
-        return (
-            <View style={styles.mainView}>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
-                    <TouchableWithoutFeedback onPress={() => Actions.pop()}><Image style={styles.ico} source={require('./ico/32/back.png')} /></TouchableWithoutFeedback>
-                </View>
-                <View style={{ flex: 12, alignItems: 'center' }}>
-                    <PDF
-                        source={{ uri: this.props.docuri }}
-                        fitPolicy={0}
-                        style={styles.pdf} />
-                </View>
-
-            </View>
-
-        );
     }
-}
+} 
 
 const styles = StyleSheet.create({
     mainView: {
@@ -57,6 +56,6 @@ const styles = StyleSheet.create({
     pdf: {
         flex: 1,
         width: '80%',
-        height: '100%',
+        height: '100%'
     }
 });
