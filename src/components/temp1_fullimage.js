@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import LightBox from 'react-native-lightbox';
 import Modall from './Modall';
 
 export default class FullImage extends Component {

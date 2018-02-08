@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, Dimensions, StatusBar } from 'react-native';
 import VB from './VideoBtn';
 import DB from './DocBtn';
-import LightBox from 'react-native-lightbox';
 import Modall from './Modall';
 
 export default class ImageButtons extends Component {

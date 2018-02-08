@@ -14,10 +14,9 @@ import axios from 'axios';
 import hash from 'object-hash';
 import * as Progress from 'react-native-progress';
 import md5 from 'md5';
+import base64 from 'base-64';
 import Routes from './src/components/Routes';
 import DeviceInfo from 'react-native-device-info';
-import Orientation from 'react-native-orientation';
-import base64 from 'base-64';
 import KeepAwake from 'react-native-keep-awake';
 import _ from 'lodash';
 
@@ -41,9 +40,6 @@ export default class App extends Component {
     appState: AppState.currentState
   };
 
-  componentDidMount() {
-    //Orientation.lockToLandscape();
-  }
 
   isLoading() {
     const deviceId = DeviceInfo.getUniqueID();
@@ -453,6 +449,15 @@ export default class App extends Component {
     }
 
     akoNemaNeta = () => {
+      RNFB.fs.exists(pathToProjectJson)
+      .then(res => {
+        if(res) {
+          RNFB.fs.readFile(pathToProjectJson, 'utf8')
+          .then(res => {global.projectJson = JSON.parse(res); return Promise.resolve() })
+        } else {
+          this.setState({ isLoading: -1 });
+        }
+      })
       RNFB.fs.exists(pathToContentJson)
         .then(res => {
           if (!res) {
@@ -465,20 +470,9 @@ export default class App extends Component {
         })
     }
 
-    isNetworkConnected = () => {
-      if (Platform.OS === 'ios') {
-        return new Promise(resolve => {
-          const handleFirstConnectivityChangeIOS = isConnected => {
-            NetInfo.isConnected.removeEventListener('connectionChange', handleFirstConnectivityChangeIOS);
-            resolve(isConnected);
-          };
-          NetInfo.isConnected.addEventListener('connectionChange', handleFirstConnectivityChangeIOS);
-        });
-      }
-      return NetInfo.isConnected.fetch();
-    }
 
-    isNetworkConnected()
+
+    this.isNetworkConnected()
       .then(res => {
         if (res) {
           akoImaNeta();
@@ -491,33 +485,53 @@ export default class App extends Component {
 
   }// End of isLoading()
 
+  isNetworkConnected = () => {
+    if (Platform.OS === 'ios') {
+      return new Promise(resolve => {
+        const handleFirstConnectivityChangeIOS = isConnected => {
+          NetInfo.isConnected.removeEventListener('connectionChange', handleFirstConnectivityChangeIOS);
+          resolve(isConnected);
+        };
+        NetInfo.isConnected.addEventListener('connectionChange', handleFirstConnectivityChangeIOS);
+      });
+    }
+    return NetInfo.isConnected.fetch();
+  }
+
   componentWillMount() {
-    //Orientation.lockToLandscape();
     KeepAwake.activate();
     this.isLoading();
   }
 
   syncApp() {
     const projectJsonURL = 'http://www.cduppy.com/salescms/?a=ajax&do=getProject&projectId=3&token=1234567890';
-    RNFB.fs.readFile(RNFB.fs.dirs.DocumentDir + '/checkedFiles.json', 'utf8')
-      .then((res) => JSON.parse(res))
-      .then(fajlic => {
-        fetch(projectJsonURL)
-          .then(res => res.json())
-          .then(res => {
-            let neSkinutiFajlovi = fajlic.failedDownloads.length > 0 ? 'But there seems to be ' + fajlic.failedDownloads.length + ' missing files. If this problem persists, that means files are missing from the server. Contact your admin to fix it.' : 'Seems everything is OK. \nIf you want you can restart application anyway.';
-            if (res.project.lastChanges == global.projectJson.project.lastChanges) {
-              // Alert.alert('App is already up to date!', neSkinutiFajlovi, [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }])
-            }
-            else {
-              Alert.alert('There seems to be update!', 'Do you wish to sync?', [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
-            }
-          })
-      })
+    this.isNetworkConnected()
+    .then(res => {
+      if(res) {
+        RNFB.fs.readFile(RNFB.fs.dirs.DocumentDir + '/checkedFiles.json', 'utf8')
+        .then((res) => JSON.parse(res))
+        .then(fajlic => {
+          fetch(projectJsonURL)
+            .then(res => res.json())
+            .then(res => {
+              let neSkinutiFajlovi = fajlic.failedDownloads.length > 0 ? 'But there seems to be ' + fajlic.failedDownloads.length + ' missing files. If this problem persists, that means files are missing from the server. Contact your admin to fix it.' : 'Seems everything is OK. \nIf you want you can restart application anyway.';
+              if (res.project.lastChanges == global.projectJson.project.lastChanges) {
+                 //Alert.alert('App is already up to date!', neSkinutiFajlovi, [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }])
+              }
+              else {
+                Alert.alert('There seems to be update!', 'Do you wish to sync?', [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
+              }
+            })
+        })
+      } else {
+        //Alert.alert('Offline', 'You seem to be offline.', [{ text: 'OK', onPress: () => {} }]);
+      }
+    })
+
   }
 
   _handleAppStateChange = (nextAppState) => {
-    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active' && this.state.isLoading == 0) {
       console.log('App has come to the foreground!');
       this.syncApp();
     }

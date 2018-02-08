@@ -7,7 +7,6 @@ import Body from './Body';
 import SettingsComponent from './Settings';
 import Languages from './Languages';
 import Search from './Search';
-import Orientation from 'react-native-orientation';
 
 
 class HBF extends Component {

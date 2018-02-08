@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, Dimensions } from 'react-native';
-import LightBox from 'react-native-lightbox';
 import HTML from 'react-native-render-html';
 import Swiper from 'react-native-swiper';
 import VB from './VideoBtn';
 import DB from './DocBtn';
 import Modall from './Modall';
-
 import SwiperFlatList from './SwiperFlatList';
-import { Lightbox } from 'react-native-router-flux';
 export const { width, height } = Dimensions.get('window');
 
 
