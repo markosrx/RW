@@ -6,14 +6,14 @@ class Modall extends Component {
 
     // this.props.source
 
-    state = { modalVisible: false, dark: false }
+    state = { modalVisible: false }
 
     closeModal() {
-        this.setState({ modalVisible: false, dark: false });
+        this.setState({ modalVisible: false });
     }
 
     openModal() {
-        this.setState({ dark: true, modalVisible: true })
+        this.setState({  modalVisible: true })
         //.then(() => this.setState({}));
     }
 
@@ -40,7 +40,8 @@ class Modall extends Component {
                     onRequestClose={() => this.closeModal()}
                     visible={this.state.modalVisible}
                     animationType={'fade'}
-
+                    supportedOrientations={['landscape']}
+                    presentationStyle={'fullScreen'}
                 >
                     <View style={styles.aa}>
                         <TouchableWithoutFeedback onPress={() => this.closeModal()}  >
@@ -56,6 +57,8 @@ class Modall extends Component {
                     onRequestClose={() => this.closeModal()}
                     visible={this.state.modalVisible}
                     animationType={'fade'}
+                    supportedOrientations={['landscape']}
+                    presentationStyle={'fullScreen'}
                 >
                     <View style={styles.aa}>
                         <TouchableWithoutFeedback onPress={() => this.closeModal()}>
@@ -87,12 +90,6 @@ const styles = {
         flex: 1,
         justifyContent: 'center',
         backgroundColor: 'grey',
-
-    },
-    dark: {
-        backgroundColor: 'black',
-        width: '100%',
-        height: '100%',
 
     }
 }

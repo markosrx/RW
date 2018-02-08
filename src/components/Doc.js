@@ -4,6 +4,8 @@ import { Actions } from 'react-native-router-flux';
 import PDF from 'react-native-pdf';
 
 export default class DocumentView extends Component {
+
+    
     render() {
         if (Platform.OS === 'ios') {
             return (
