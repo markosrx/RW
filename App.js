@@ -6,7 +6,8 @@ import {
   View,
   NetInfo,
   Alert,
-  StatusBar
+  StatusBar,
+  AppState
 } from 'react-native';
 import RNFB from 'react-native-fetch-blob';
 import axios from 'axios';
@@ -17,14 +18,8 @@ import Routes from './src/components/Routes';
 import DeviceInfo from 'react-native-device-info';
 import Orientation from 'react-native-orientation';
 import base64 from 'base-64';
-import BackgroundTimer from 'react-native-background-timer';
 import KeepAwake from 'react-native-keep-awake';
 import _ from 'lodash';
-setTimeout = BackgroundTimer.setTimeout.bind(BackgroundTimer)
-setInterval = BackgroundTimer.setInterval.bind(BackgroundTimer)
-clearTimeout = BackgroundTimer.clearTimeout.bind(BackgroundTimer)
-clearInterval = BackgroundTimer.clearInterval.bind(BackgroundTimer)
-
 
 export default class App extends Component {
 
@@ -43,6 +38,7 @@ export default class App extends Component {
     visibleDownloadError: false,
     total: 0,
     mbDone: 0,
+    appState: AppState.currentState
   };
 
   componentDidMount() {
@@ -510,8 +506,9 @@ export default class App extends Component {
           .then(res => res.json())
           .then(res => {
             let neSkinutiFajlovi = fajlic.failedDownloads.length > 0 ? 'But there seems to be ' + fajlic.failedDownloads.length + ' missing files. If this problem persists, that means files are missing from the server. Contact your admin to fix it.' : 'Seems everything is OK. \nIf you want you can restart application anyway.';
-            if (res.project.lastChanges == global.projectJson.project.lastChanges)
-              Alert.alert('App is already up to date!', neSkinutiFajlovi, [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }])
+            if (res.project.lastChanges == global.projectJson.project.lastChanges) {
+              // Alert.alert('App is already up to date!', neSkinutiFajlovi, [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }])
+            }
             else {
               Alert.alert('There seems to be update!', 'Do you wish to sync?', [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }]);
             }
@@ -519,10 +516,21 @@ export default class App extends Component {
       })
   }
 
-  componentDidMount() {
-    console.log('componentDidMount() od App.js');
-    BackgroundTimer.runBackgroundTimer(this.syncApp, 1000 * 60 * 60 * 24);
+  _handleAppStateChange = (nextAppState) => {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground!');
+      this.syncApp();
+    }
+    this.setState({ appState: nextAppState });
+  }
 
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  componentDidMount() {
+    AppState.addEventListener('change', this._handleAppStateChange);
+    console.log('componentDidMount() od App.js');
   }
 
   calcProgress() {
