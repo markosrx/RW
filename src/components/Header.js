@@ -59,7 +59,6 @@ export default class Header extends Component {
     const pathToCheckedFiles = RNFB.fs.dirs.DocumentDir + '/checkedFiles.json';
     this.isNetworkConnected()
       .then(res => {
-        console.log(res);
         if (res) {
           RNFB.fs.readFile(RNFB.fs.dirs.DocumentDir + '/checkedFiles.json', 'utf8')
             .then((res) => JSON.parse(res))
@@ -87,7 +86,11 @@ export default class Header extends Component {
 
   syncOrSpinner = () => {
     if (this.state.syncLoading) {
-      return <ActivityIndicator size={'small'} />
+      return (
+        <View style={styles.ico}>
+          <ActivityIndicator size={'small'} />
+        </View>
+      );
     }
 
     return (
