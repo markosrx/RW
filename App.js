@@ -19,6 +19,8 @@ import Routes from './src/components/Routes';
 import DeviceInfo from 'react-native-device-info';
 import KeepAwake from 'react-native-keep-awake';
 import _ from 'lodash';
+import Orientation from 'react-native-orientation';
+
 
 export default class App extends Component {
 
@@ -501,6 +503,7 @@ export default class App extends Component {
   componentWillMount() {
     KeepAwake.activate();
     this.isLoading();
+    Orientation.lockToLandscape();
   }
 
   syncApp() {

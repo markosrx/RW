@@ -58,7 +58,7 @@ class Modall extends Component {
                     visible={this.state.modalVisible}
                     animationType={'fade'}
                     supportedOrientations={['landscape']}
-                    presentationStyle={'fullScreen'}
+                    presentationStyle={'overFullScreen'}
                 >
                     <View style={styles.aa}>
                         <TouchableWithoutFeedback onPress={() => this.closeModal()}>
