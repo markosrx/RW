@@ -122,7 +122,6 @@ const styles = StyleSheet.create({
   headingMain: {
     paddingTop: 40,
     paddingBottom: 4,
-    fontSize: Dimensions.get('window').height*0.05
   },
   contentContainer: {
     marginTop: 20,

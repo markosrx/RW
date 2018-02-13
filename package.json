@@ -20,7 +20,7 @@
     "react-native-keep-awake": "^2.0.6",
     "react-native-keyboard-aware-scroll-view": "^0.4.1",
     "react-native-modal": "^5.0.0",
-    "react-native-pdf": "^3.0.0",
+    "react-native-pdf": "^3.0.3",
     "react-native-progress": "^3.4.0",
     "react-native-render-html": "^3.5.2",
     "react-native-restart": "0.0.6",

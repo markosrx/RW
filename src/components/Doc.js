@@ -18,7 +18,8 @@ export default class DocumentView extends Component {
                     <View style={{ flex: 12 }}>
                         <PDF
                             source={{ uri: this.props.docuri }}
-                            fitPolicy={0}>
+                            
+                            >
                         </PDF>
                     </View>
                 </View>);
@@ -44,8 +45,8 @@ export default class DocumentView extends Component {
 const styles = StyleSheet.create({
     mainView: {
         flex: 1,
-        width: '100%',
-        height: '100%'
+        width: Dimensions.get('window').width
+
     },
     ico: {
         height: 35,
