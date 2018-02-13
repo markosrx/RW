@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, View, Image, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Modal, View, Image, TouchableOpacity, TouchableWithoutFeedback, Dimensions } from 'react-native';
 //import Modal from 'react-native-modal';
 
 class Modall extends Component {
@@ -45,7 +45,7 @@ class Modall extends Component {
                 >
                     <View style={styles.aa}>
                         <TouchableWithoutFeedback onPress={() => this.closeModal()}  >
-                            <Image resizeMethod='resize' style={{ width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: this.props.pic }} />
+                    <Image resizeMethod='resize' style={{ width: '100%', height: '100%', resizeMode: 'contain', backgroundColor: 'white' }} source={{ uri: this.props.pic }} />
                         </TouchableWithoutFeedback>
                     </View>
                 </Modal>
@@ -58,11 +58,10 @@ class Modall extends Component {
                     visible={this.state.modalVisible}
                     animationType={'fade'}
                     supportedOrientations={['landscape']}
-                    presentationStyle={'overFullScreen'}
                 >
                     <View style={styles.aa}>
-                        <TouchableWithoutFeedback onPress={() => this.closeModal()}>
-                            {this.props.children}
+                    <TouchableWithoutFeedback onPress={() => this.closeModal()}>
+                        {this.props.children}
                         </TouchableWithoutFeedback>
                     </View>
                 </Modal>
@@ -82,7 +81,6 @@ class Modall extends Component {
 
 const styles = {
     ss: {
-        flex: 1,
         width: '100%',
         height: '100%',
     },

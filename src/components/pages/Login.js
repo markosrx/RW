@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
   login: {
     flex:1.5,
     alignItems:'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   container2: {
     backgroundColor: '#4169e1',
@@ -87,6 +87,8 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     width: 600,
+    height: 70,
+    padding: 10,
     backgroundColor: "white",
     borderRadius: 5,
     fontSize: 25,

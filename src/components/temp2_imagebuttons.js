@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Image, Dimensions, StatusBar } from 'react-nati
 import VB from './VideoBtn';
 import DB from './DocBtn';
 import Modall from './Modall';
+const {height, width} = Dimensions.get('window');
+const aspectRatio = height/width;
 
 export default class ImageButtons extends Component {
 
@@ -46,10 +48,11 @@ export default class ImageButtons extends Component {
                     </View>
 
                     <View style={styles.contentContainer}>
-
+                    {console.log(aspectRatio)}
+                        {aspectRatio < 0.6 ? 
                         <View style={styles.contentPic}>
                             <Modall>
-                              <Image resizeMethod='scale' style={{width: '100%', height: '100%', resizeMode: 'cover' }} source={{ uri: this.state.image }}/>
+                                <Image resizeMethod='resize' style={{width: '100%', height: '100%', resizeMode: 'cover', backgroundColor: 'white' }} source={{ uri: this.state.image }}/>
                             </Modall>
                        
                             <View style={styles.ButtonContainer}>
@@ -58,6 +61,19 @@ export default class ImageButtons extends Component {
                             </View>
 
                         </View>
+                         :
+                         <View style={styles.contentPic}>
+                         <Modall>
+                             <Image resizeMethod='scale' style={{width: '100%', height: '100%', resizeMode: 'contain', backgroundColor: 'white' }} source={{ uri: this.state.image }}/>
+                         </Modall>
+                    
+                         <View style={styles.ButtonContainer}>
+                             {this.state.videoPath.length > 0 && <VB videouri={this.state.videoPath[0]} />}
+                             {this.state.documentPath.length > 0 && <DB documenturi={this.state.documentPath[0]} />}
+                         </View>
+
+                     </View>
+                        }
 
                     </View>
 
@@ -81,14 +97,14 @@ const styles = StyleSheet.create({
     },
     headingText: {
         color: '#1496ba',
-        fontSize: 15,
+        fontSize: Dimensions.get('window').height*0.03,
         paddingBottom: 10,
         paddingLeft: 30
     },
     headingMain: {
         paddingTop: 20,
         paddingBottom: 4,
-        fontSize: 25
+        fontSize: Dimensions.get('window').height*0.05
     },
     contentContainer: {
         marginTop: 20,

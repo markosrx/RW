@@ -49,7 +49,7 @@ export default class TextImage extends Component {
         return (
           <View key={i} style={{backgroundColor:'white', width: w, height: h}}>
             <Modall pic={pic}>
-              <Image resizeMethod='scale' style={[styles.swiperPic, { width: w, height: h , resizeMode:'cover'}]} source={{ uri: pic }} />
+                <Image resizeMethod='scale' style={[styles.swiperPic, { width: w, height: h, resizeMode: 'contain', backgroundColor: 'white'}]} source={{ uri: pic }} />
             </Modall>
           </View>
         );
@@ -73,7 +73,8 @@ export default class TextImage extends Component {
 
             <View style={styles.contentText}>
               <ScrollView>
-                <HTML html={this.props.text} />
+            <HTML html={this.props.text} baseFontStyle={{fontSize: Dimensions.get('window').height*0.02}}/>
+            
               </ScrollView>
             </View>
 
@@ -115,22 +116,23 @@ const styles = StyleSheet.create({
   },
   headingText: {
     color: '#1496ba',
-    fontSize: 15,
+    fontSize: Dimensions.get('window').height*0.03,
     paddingBottom: 35
   },
   headingMain: {
     paddingTop: 40,
     paddingBottom: 4,
-    fontSize: 25
+    fontSize: Dimensions.get('window').height*0.05
   },
   contentContainer: {
     marginTop: 20,
     flexDirection: 'row',
-    flex: 1,
+//    flex: 1,
     width: '100%',
-    height: '100%',
+    height: Dimensions.get('window').height*0.6 ,
     marginBottom: 25,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'flex-start'
   },
   contentText: {
     flex: 2.5,
@@ -140,13 +142,14 @@ const styles = StyleSheet.create({
   },
   contentPic: {
     flex: 4.5,
+                                 flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 30,
+    marginLeft: 30
   },
   swiperPic: {
     alignSelf: 'center',
-    resizeMode: 'cover'
+    resizeMode: 'contain'
   },
   ButtonContainer: {
     justifyContent: 'flex-end',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, StatusBar, TouchableWithoutFeedback, Alert, Text, ActivityIndicator, Platform, NetInfo } from 'react-native';
+import { StyleSheet, View, Image, StatusBar, TouchableWithoutFeedback, Alert, Text, ActivityIndicator, Platform, NetInfo, Dimensions } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import HTML from 'react-native-render-html';
 import RNRestart from 'react-native-restart';
@@ -67,7 +67,7 @@ export default class Header extends Component {
                 .then(res => res.json())
                 .then(res => {
                   let neSkinutiFajlovi = fajlic.failedDownloads.length > 0 ? 'But there seems to be ' + fajlic.failedDownloads.length + ' missing files. If this problem persists, that means files are missing from the server. Contact your admin to fix it.' : 'Seems everything is OK. \nIf you want you can restart application anyway.';
-                  if (res.project.lastChanges == global.projectJson.project.lastChanges) {
+                  if (res.lastChanges == global.projectJson.lastChanges) {
                     Alert.alert('App is already up to date!', neSkinutiFajlovi, [{ text: 'Sync', onPress: () => { RNRestart.Restart(); } }, { text: 'Cancel', onPress: () => { } }])
                   }
                   else {
@@ -109,7 +109,7 @@ export default class Header extends Component {
         <StatusBar barStyle="dark-content" hidden={true} />
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
 
-          <View style={{ flex: 3.5, alignItems: 'center', alignSelf: 'center', width: '100%' }}><HTML html={this.props.title ? this.props.title : ''} /></View>
+            <View style={{ flex: 3.5, alignItems: 'center', alignSelf: 'center', width: '100%'}}><HTML html={this.props.title ? this.props.title : ''} baseFontStyle={{fontSize: Dimensions.get('window').height*0.03}}/></View>
 
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
 

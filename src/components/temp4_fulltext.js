@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Dimensions } from 'react-native';
 import HTML from 'react-native-render-html';
 
 
@@ -43,13 +43,13 @@ const styles = StyleSheet.create({
     },
     headingText: {
         color: '#1496ba',
-        fontSize: 15,
+        fontSize: Dimensions.get('window').height*0.03,
         paddingBottom: 35
     },
     headingMain: {
         paddingTop: 40,
         paddingBottom: 4,
-        fontSize: 25
+        fontSize: Dimensions.get('window').height*0.05
     },
     contentContainer: {
         marginTop: 20,
